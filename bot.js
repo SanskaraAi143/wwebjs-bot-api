@@ -152,7 +152,7 @@ app.post('/send-message', async (req, res) => {
                         error: 'messageData.text is required for text messages'
                     });
                 }
-                await channel.sendMessage(messageData.text);
+                await channel.sendMessage(messageData.text, { sendSeen: false });
                 break;
 
             case 'image':
@@ -165,7 +165,8 @@ app.post('/send-message', async (req, res) => {
                 const imageMedia = await processMediaData(messageData);
                 try {
                     await channel.sendMessage(imageMedia, {
-                        caption: messageData.caption || ''
+                        caption: messageData.caption || '',
+                        sendSeen: false
                     });
                 } finally {
                     // Cleanup temp file
@@ -186,7 +187,8 @@ app.post('/send-message', async (req, res) => {
                 const audioMedia = await processMediaData(messageData);
                 try {
                     await channel.sendMessage(audioMedia, {
-                        sendAudioAsVoice: messageData.asVoiceNote !== false
+                        sendAudioAsVoice: messageData.asVoiceNote !== false,
+                        sendSeen: false
                     });
                 } finally {
                     // Cleanup temp file
@@ -207,7 +209,8 @@ app.post('/send-message', async (req, res) => {
                 const videoMedia = await processMediaData(messageData);
                 try {
                     await channel.sendMessage(videoMedia, {
-                        caption: messageData.caption || ''
+                        caption: messageData.caption || '',
+                        sendSeen: false
                     });
                 } finally {
                     // Cleanup temp file
